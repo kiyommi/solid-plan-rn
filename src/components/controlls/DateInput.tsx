@@ -1,15 +1,19 @@
 import { useState } from 'react'
-import { Text, View } from 'react-native';
+import { Text, TextProps } from 'react-native';
 import DatePicker from 'react-native-date-picker'
 
-export const DateInput =  ({date, ...props}: {date: Date}) => {
+interface DateInputProps extends TextProps {
+  date: Date;
+}
+
+export const DateInput =  ({date, ...props}: DateInputProps) => {
     const [pickerDate, setPickerDate] = useState(new Date(date));
     const [isOpen, setIsOpen] = useState(false);
   
     return (
       <>
        <Text {...props} onPress={() => setIsOpen(true)}>{pickerDate.toLocaleDateString('en-GB')}</Text>
-       <DatePicker {...props}
+       <DatePicker
           modal
           mode="date"
           open={isOpen}
