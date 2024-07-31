@@ -4,4 +4,5 @@ declare module "*.svg" {
     export default content;
   }
 
-declare module 'react-native-svg-animations'
+declare module 'react-native-svg-animations';
+declare module 'react-native-swipeable';

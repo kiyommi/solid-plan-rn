@@ -8,6 +8,7 @@ import { Home } from "./Home";
 import { SettingButton } from "../components/SettingButton";
 import { View} from "react-native";
 import { AnimatedSVGPath } from "react-native-svg-animations";
+import { Inventory } from "./Inventory";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -45,12 +46,20 @@ export const Main = () => {
                     <Stack.Screen
                         name="Home"
                         initialParams={{user}}
-                        options={{title: 'Welcome',
+                        component={Home}
+                        options={{title: 'Home',
                         headerRight: (props) => <SettingButton />
                     }}
-                    >
-                        {() => <Home user={user} />}
-                    </Stack.Screen>
+                    />
+
+                    <Stack.Screen
+                        name="Inventory"
+                        initialParams={{user}}
+                        component={Inventory}
+                        options={{title: 'Inventory',
+                        headerRight: (props) => <SettingButton />
+                    }}
+                    />
                   </Stack.Group>
                 )}
               </Stack.Navigator>
