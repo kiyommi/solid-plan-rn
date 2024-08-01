@@ -1,0 +1,2 @@
+
+export const SHOPPING_ITEMS = [{id: '1', amount: '1', amountType: 1}, {id: '2', amount: '1', amountType: 1}, {id: '3', amount: '1', amountType: 0}, {id: '4', amount: '1', amountType: 1}, {id: '5', amount: '1', amountType: 0}];

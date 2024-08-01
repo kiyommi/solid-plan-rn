@@ -12,6 +12,10 @@ export const Home = ({navigation}: any) => {
         navigation.navigate('Inventory')
     }
 
+    const goToShoppingList = () => {
+        navigation.navigate('ShoppingList')
+    }
+
     return (
         <View
             style={{
@@ -22,6 +26,10 @@ export const Home = ({navigation}: any) => {
             <View>
                 <Text onPress={goToInventory}>Freezer Stash - Close expiry date</Text>
                 <InventoryList data={closeExpiryItems} />
+            </View>
+
+            <View>
+                <Text onPress={goToShoppingList}>Shopping List</Text>
             </View>
         </View>
     )

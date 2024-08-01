@@ -9,6 +9,7 @@ import { SettingButton } from "../components/SettingButton";
 import { View} from "react-native";
 import { AnimatedSVGPath } from "react-native-svg-animations";
 import { Inventory } from "./Inventory";
+import { ShoppingList } from "./ShoppingList";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -57,6 +58,14 @@ export const Main = () => {
                         initialParams={{user}}
                         component={Inventory}
                         options={{title: 'Inventory',
+                        headerRight: (props) => <SettingButton />
+                    }}
+                    />
+                    <Stack.Screen
+                        name="ShoppingList"
+                        initialParams={{user}}
+                        component={ShoppingList}
+                        options={{title: 'Shopping List',
                         headerRight: (props) => <SettingButton />
                     }}
                     />

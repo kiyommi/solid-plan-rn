@@ -9,6 +9,7 @@ function Input({
   onUpdateValue,
   value,
   isInvalid,
+  ...rest
 }: InputProps) {
   return (
     <View style={styles.inputContainer}>
@@ -22,6 +23,7 @@ function Input({
         secureTextEntry={isSecure}
         onChangeText={onUpdateValue}
         value={value}
+        {...rest}
       />
     </View>
   );

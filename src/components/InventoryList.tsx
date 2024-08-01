@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import GestureRecognizer from 'react-native-swipe-gestures';
 import { FlatList, StyleSheet, Text, View, Alert } from "react-native";
 
 import { Colors } from '../constants/styles';
 import { closeExpiryFilter } from '../helpers/inventoryHelper';
 import { DateInput } from './controlls/DateInput';
+import SwipeableItem from './controlls/SwipeableItem';
 
 const getDateStyle = (date: Date) => {
     const currentDate = new Date();
@@ -18,24 +18,7 @@ const getDateStyle = (date: Date) => {
 }
 
 export const InventoryList = ({data, isEditMode = false}: {data: InventoryItem[], isEditMode?: boolean}) => {
-    const [inventoryItems, setInvemtoryItems] = useState(data);
-
-    const renderItem = ({item}: {item: InventoryItem}) => (
-        <GestureRecognizer onSwipeRight={() => promptDeleteAlert(item)}>
-            <View key={item.id} style={styles.item} >
-                <Text style={styles.itemText}>{item.name}</Text>
-                <DateInput style={getDateStyle(item.expiryDate)} date={item.expiryDate}></DateInput>
-            </View>
-        </GestureRecognizer>); 
-
-    const promptDeleteAlert = (item:InventoryItem) => {
-        Alert.alert('Remove item', `Do you want to remove ${item.name} from the stock?`, [
-            {
-              text: 'Cancel',
-            },
-            {text: 'OK', onPress: () => deleteItem(item.id)},
-          ]);
-    }    
+    const [inventoryItems, setInvemtoryItems] = useState(data); 
     
     const deleteItem = (id: string) => {
         const itemToDelete = inventoryItems.find((item) => item.id === id);
@@ -49,6 +32,14 @@ export const InventoryList = ({data, isEditMode = false}: {data: InventoryItem[]
             return newItems;
         });
     }
+
+    const renderItem = ({item}: {item: InventoryItem}) => (
+        <SwipeableItem item={item} onDeleteApproved={() => deleteItem(item.id)}>
+            <View key={item.id} style={styles.item} >
+                <Text style={styles.itemText}>{item.name}</Text>
+                <DateInput style={getDateStyle(item.expiryDate)} date={item.expiryDate}></DateInput>
+            </View>
+        </SwipeableItem>); 
 
     return (
         <>
