@@ -19,4 +19,5 @@ const App = () => {
     </StrictMode>
   )
 };
+
 export default App;

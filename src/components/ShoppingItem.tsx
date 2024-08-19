@@ -1,26 +1,50 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import Input from "./controlls/Input";
 import { AmountType } from "../types/enums";
+import SuggestionInput from "./controlls/SuggestionInput";
+
+import { PRODUCTS } from "../dummyData/products";
+
 
 const shiftAmountType = (currentAmountType: AmountType) => {
     const newType = (currentAmountType + 1) % (Object.keys(AmountType).length/2);
     return newType;
 };
 
-const ShoppingItem = ({item, onItemUpdate}: {item: PopulatedShoppingItem, onItemUpdate: (p: ItemPropToUpdate) => void}) => {
-    console.log('itemAmount: ', item.amount);
+const AMOUNT_TYPES = [
+    {name: 'PIECE', color: '#fcf69d'},
+    {name: 'KG', color: '#fc9d9d'},
+    {name: 'GR', color: '#fc9dec'},
+    {name: 'LT', color: '#9ddcfc'},
+    {name: 'ML', color: '#bff5e6'},
+];
+
+const listColors = ['white', 'ivory'];
+
+const ShoppingItem = ({item, index, onItemUpdate}: {item: PopulatedShoppingItem, index: number, onItemUpdate: (p: ItemPropToUpdate) => void}) => {
+
+    const getFilteredGroceries = (searchParam: string) => {
+        //TODO: replace with server request
+        const lowerSearch = searchParam.toLowerCase();
+        return PRODUCTS.filter((product)=> product.name.toLowerCase().includes(lowerSearch));
+    };
+
+    const updateItemNameInList = ({name, id}: {name: string, id: string}) => {
+        onItemUpdate({name, id})
+    }
 
     return (
-        <View key={item.id} style={styles.item} >
-            <Text style={styles.itemText}>{item.name}</Text>
-            <Input keyboardType={"number-pad"} onUpdateValue={(val) => onItemUpdate({amount: val})}
+        <View key={item.id} style={[styles.item, {backgroundColor: listColors[index % 2]}]} >
+            <SuggestionInput textStyle={[styles.itemName]} getSuggestions={getFilteredGroceries}
+                selected={{id: item.id, name: item.name}} onSetSelection={updateItemNameInList}
+            />
+            <Input maxLength={6} style={[styles.itemText, styles.itemAmount]} keyboardType="decimal-pad" selectTextOnFocus={true} onUpdateValue={(val) => onItemUpdate({amount: val})}
                 value={item.amount}
             />
-            <View>
-                <Text
-                    style={styles.itemText}
+            <View style={[styles.itemText, styles.amountType, {backgroundColor: AMOUNT_TYPES[Number(item.amountType)].color}]}>
+                <Text    
                     onPress={() => onItemUpdate({amountType: shiftAmountType(item.amountType)})}>
-                        {item.amountType}
+                        {AMOUNT_TYPES[Number(item.amountType)].name}
                 </Text>
             </View>
         </View>);
@@ -29,20 +53,34 @@ const ShoppingItem = ({item, onItemUpdate}: {item: PopulatedShoppingItem, onItem
 export default ShoppingItem;
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      paddingTop: 22,
-    },
     item: {
         flexDirection: 'row',
         alignItems: 'center',
         width: '100%',
-        padding: 10
+        padding: 10,
     },
     itemText: {
-      fontSize: 16,
-      height: 24,
-      flex: 1,
+        fontSize: 16,
+        height: 24,
     },
+    itemName: {  
+      flex: 5,
+      width: '60%',
+    },
+    itemAmount: {
+        flex: 2,
+        paddingLeft: 10,
+        paddingRight: 10,
+        width: 80,
+        textAlign: 'right',
+    },
+    amountType: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        borderCurve: 'circular',
+        borderRadius: 5,
+        paddingTop: 3,
+    }
   });
   

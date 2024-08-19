@@ -32,6 +32,8 @@ type Product = {
  }
 
  type ItemPropToUpdate = {
+  name?: string;
+  id?: string;
   amountType?: AmountType;
   amount?: string;
 }

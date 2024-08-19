@@ -1,13 +1,17 @@
 import { useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Icon } from '@rneui/themed';
+
 import SwipeableItem from "../components/controlls/SwipeableItem";
 import ShoppingItem from "../components/ShoppingItem";
 import { SHOPPING_ITEMS } from "../dummyData/shoppingList";
 
 import { Colors } from "../constants/styles";
 import { PRODUCTS } from "../dummyData/products";
+import { AmountType } from "../types/enums";
 
 const shoppingItems: PopulatedShoppingItem[] = [];
+
 
 const populateShoppingList = () => {
     SHOPPING_ITEMS.forEach((item) => {
@@ -36,7 +40,6 @@ export const ShoppingList = () => {
     }
 
     const shoppingListUpdate = (item: PopulatedShoppingItem, propsToUpdate: ItemPropToUpdate) => {
-        console.log('itemToUpdate before: ', item, ', propsToUpdate: ', propsToUpdate);
 
         setShoppingList((shoppingList) => {
             const listItem = shoppingList.find((listItem => listItem.id === item.id));
@@ -47,34 +50,51 @@ export const ShoppingList = () => {
             const newList = [...shoppingList];
             const updatedItem = {...item, ...propsToUpdate};
             newList[updatedItemIndex] = updatedItem;
-            console.log('itemToUpdate: ', updatedItem);
             return newList;
         });
     }
 
-    const renderItem = ({item}: {item: PopulatedShoppingItem}) => {
+    const addItem = () => {
+        setShoppingList((lastItems) => {
+            const newItems = [...lastItems];
+            newItems.push({
+                id: 'temp',
+                name: '',
+                type: undefined,
+                amount: '1',
+                amountType: AmountType.PIECE,
+            });
+            return newItems;
+        });
+        //TODO: when saving totaly new grocery item, server should notify admin to add it to the grocery bank.
+    };
+
+    const renderItem = ({item, index}: {item: PopulatedShoppingItem, index: number}) => {
         return <SwipeableItem onDeleteApproved={deleteItem} item={item}>
-            <ShoppingItem item={item} onItemUpdate={(propsToUpdate) => shoppingListUpdate(item, propsToUpdate)}/>
+            <ShoppingItem index={index} item={item} onItemUpdate={(propsToUpdate) => shoppingListUpdate(item, propsToUpdate)}/>
         </SwipeableItem>; 
     };
     return (
-        <>
-        <View style={styles.item}>
-            <Text style={[styles.itemText, styles.itemHeader]}>Product Name</Text>
-            <Text style={[styles.itemText, styles.itemHeader]}>Amount</Text>
-        </View>
-        <FlatList
-            data={shoppingList}
-            renderItem={renderItem}
-        />
-      </>
+        <View style={styles.container}>
+            <View style={styles.item}>
+                <Text style={[styles.itemText, styles.itemHeader, styles.itemName]}>Product Name</Text>
+                <Text style={[styles.itemText, styles.itemHeader, styles.itemAmount]}>Amount</Text>
+            </View>
+            <FlatList
+                data={shoppingList}
+                renderItem={renderItem}
+            />
+            <TouchableOpacity onPress={addItem} style={styles.addButton}>
+                <Icon id="AddItem" name="add" type='ionicon' color='white' size={40}/>
+            </TouchableOpacity>
+      </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      paddingTop: 22,
+        position: 'relative',
+        height: '100%',
     },
     item: {
         flexDirection: 'row',
@@ -91,15 +111,22 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: Colors.primary500
     },
-    itemExpired: {
-        color: Colors.error800
+    itemName: {
+        flex: 2,
     },
-    itemCloseExpiry: {
-        color: Colors.warning100,
+    itemAmount: {
     },
     listHeaders: {
         fontSize: 18,
         fontWeight: '800',
+    },
+    addButton: {
+        position: 'absolute',
+        bottom: 20,
+        right: 20,
+        backgroundColor: Colors.primary800,
+        borderRadius: 40,
+        padding: 10
     }
   });
   

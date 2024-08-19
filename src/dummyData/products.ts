@@ -35,5 +35,12 @@ const milk = {
     imageUrl: 'https://thumbs.dreamstime.com/b/milk-jug-glass-white-background-33845266.jpg',
 };
 
+const milkChocolate = {
+    id: '6',
+    name: 'milk chocolate', 
+    type: ProductType.DAIRY,
+    imageUrl: 'https://thumbs.dreamstime.com/b/milk-jug-glass-white-background-33845266.jpg',
+};
 
-export const PRODUCTS = [cucumber, tomato, eggs, flour, milk];
+
+export const PRODUCTS = [cucumber, tomato, eggs, flour, milk, milkChocolate];
