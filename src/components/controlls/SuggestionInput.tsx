@@ -1,7 +1,9 @@
 import { View, Text, FlatList, TextInputProps, TextInput, StyleSheet, Pressable, Modal } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 import debounce from "lodash/debounce";
+import { Colors } from "../../constants/styles";
+import Button from "./Button";
 
 type SuggestionInputItem = {
     id: string,
@@ -14,20 +16,26 @@ interface SuggestionInputProps extends TextInputProps {
     textStyle: any,
     onSetSelection: ({id, name}: SuggestionInputItem) => void,
     getSuggestions: (searchTerm: string) => SuggestionInputItem[],
+    isEditable?: boolean,
 }
 
 const SuggestionInput = ({
-    selected: originalValue, getSuggestions, textStyle, onSetSelection
+    selected: originalValue, getSuggestions, textStyle, onSetSelection, isEditable = false
 }: SuggestionInputProps) => {
-  const [value, setValue] = useState(originalValue.name);
+  const [value] = useState(originalValue.name);
   const [searchValue, setSearchValue] = useState(originalValue.name);
   const [isSuggestionVisible, setIsSuggestionVisible] = useState(false);
   const [suggestions, setSuggestions] = useState<SuggestionInputItem[]>([]);
+  const shouldShowAddButton = isEditable && searchValue && !suggestions?.length;
+
+  useEffect(() => {
+    if (isSuggestionVisible) {
+        updateSuggestions(searchValue);
+    }
+  }, [isSuggestionVisible]);
 
   const updateSuggestions = async (searchTerm: string) => {
-    console.log('searching: ', searchTerm);
     const newSuggestions  = await getSuggestions(searchTerm);
-    console.log('results: ', newSuggestions);
 
     if (!newSuggestions || !newSuggestions.length) {
         setSuggestions([]);
@@ -54,12 +62,17 @@ const SuggestionInput = ({
         setSearchValue(value);
     }
 
+    const onAddNewSuggestion = () => {
+        const newItem = { id: `temp-${searchValue}`, name: searchValue};
+        onSuggestionSelected(newItem);
+    }
+
   const renderItem = ({item}: {item: SuggestionInputItem}) => {
     return <View>
-        <Pressable onPress={()=> onSuggestionSelected(item)}>
-            <Text>{item.name}</Text>
-        </Pressable>
-    </View>
+                <Pressable onPress={()=> onSuggestionSelected(item)}>
+                    <Text style={styles.suggestionItem}>{item.name}</Text>
+                </Pressable>
+            </View>
   }
 
   return (
@@ -74,13 +87,19 @@ const SuggestionInput = ({
                 >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        <TextInput style={{backgroundColor: 'orange', width: '100%', }} onChangeText={onUpdateSearchTerm} value={searchValue} ref={searchRef}></TextInput>
-                        <View style={{backgroundColor: 'red', width: '100%'}}>
+                        <TextInput style={styles.searchBox} onChangeText={onUpdateSearchTerm} value={searchValue} ref={searchRef}></TextInput>
+                        <View style={styles.suggestionsContainer}>
                             <FlatList
                                 data={suggestions}
                                 renderItem={renderItem}
                             />
                         </View>
+                        {shouldShowAddButton &&
+                            <Button isFlat
+                                onPress={onAddNewSuggestion}>
+                                Add new
+                            </Button>
+                        }
                         <Pressable
                             style={[styles.button, styles.buttonClose, {position: 'absolute', bottom: 0}]}
                             onPress={onSuggestionCanceled}>
@@ -99,6 +118,23 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       marginTop: 22,
+    },
+    searchBox: {
+        borderRadius: 3,
+        borderWidth: 2,
+        borderColor: Colors.primary800,
+        width: '100%',
+        padding: 10,
+    },
+    suggestionItem: {
+        padding: 12,
+        fontSize: 16, 
+        borderBottomColor: Colors.primary100,
+        borderBottomWidth: 1
+    },
+    suggestionsContainer: {
+        backgroundColor: Colors.primary100,
+        width: '100%',
     },
     modalView: {
       margin: 20,
@@ -121,9 +157,6 @@ const styles = StyleSheet.create({
       borderRadius: 20,
       padding: 10,
       elevation: 2,
-    },
-    buttonOpen: {
-      backgroundColor: '#F194FF',
     },
     buttonClose: {
       backgroundColor: '#2196F3',

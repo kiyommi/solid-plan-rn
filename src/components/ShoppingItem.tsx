@@ -29,14 +29,10 @@ const ShoppingItem = ({item, index, onItemUpdate}: {item: PopulatedShoppingItem,
         return PRODUCTS.filter((product)=> product.name.toLowerCase().includes(lowerSearch));
     };
 
-    const updateItemNameInList = ({name, id}: {name: string, id: string}) => {
-        onItemUpdate({name, id})
-    }
-
     return (
         <View key={item.id} style={[styles.item, {backgroundColor: listColors[index % 2]}]} >
-            <SuggestionInput textStyle={[styles.itemName]} getSuggestions={getFilteredGroceries}
-                selected={{id: item.id, name: item.name}} onSetSelection={updateItemNameInList}
+            <SuggestionInput isEditable={true} textStyle={[styles.itemName]} getSuggestions={getFilteredGroceries}
+                selected={{id: item.id, name: item.name}} onSetSelection={onItemUpdate}
             />
             <Input maxLength={6} style={[styles.itemText, styles.itemAmount]} keyboardType="decimal-pad" selectTextOnFocus={true} onUpdateValue={(val) => onItemUpdate({amount: val})}
                 value={item.amount}
