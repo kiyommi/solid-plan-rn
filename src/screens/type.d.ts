@@ -2,6 +2,7 @@ type RootStackParamList = {
     Home: {user: User};
     Inventory: {user: User};
     ShoppingList: {user: User};
+    Products: undefined;
     SignUp: undefined;
     SignIn: undefined;
   };

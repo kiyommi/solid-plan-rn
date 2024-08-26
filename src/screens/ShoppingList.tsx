@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Icon } from '@rneui/themed';
 
@@ -7,24 +7,25 @@ import ShoppingItem from "../components/ShoppingItem";
 import { SHOPPING_ITEMS } from "../dummyData/shoppingList";
 
 import { Colors } from "../constants/styles";
-import { PRODUCTS } from "../dummyData/products";
 import { AmountType } from "../types/enums";
-
-const shoppingItems: PopulatedShoppingItem[] = [];
-
-
-const populateShoppingList = () => {
-    SHOPPING_ITEMS.forEach((item) => {
-        const productData = PRODUCTS.find((product) => product.id === item.id);
-        productData && shoppingItems.push({...item, name: productData!.name, type: productData!.type}); 
-    });
-};
-
-populateShoppingList();
+import { useProducts } from "../context/Product.context";
 
 export const ShoppingList = () => {
     
-    const [shoppingList, setShoppingList] = useState(shoppingItems);
+    const [shoppingList, setShoppingList] = useState(SHOPPING_ITEMS);
+    const {products} = useProducts();
+
+
+    const populateShoppingList = () => {
+        const populatedList = [] as PopulatedShoppingItem[];
+        SHOPPING_ITEMS.forEach((item) => {
+            const productData = products.find((product) => product._id === item.id);
+            productData && populatedList.push({...item, name: productData!.name, type: productData!.type}); 
+        });
+        setShoppingList(populatedList);
+    };
+
+    useMemo(populateShoppingList, []);
 
     const deleteItem = (id: string) => {
         const itemToDelete = shoppingList.find((item) => item.id === id);
@@ -71,7 +72,7 @@ export const ShoppingList = () => {
 
     const renderItem = ({item, index}: {item: PopulatedShoppingItem, index: number}) => {
         return <SwipeableItem onDeleteApproved={deleteItem} item={item}>
-            <ShoppingItem index={index} item={item} onItemUpdate={(propsToUpdate) => shoppingListUpdate(item, propsToUpdate)}/>
+            <ShoppingItem  index={index} item={item} onItemUpdate={(propsToUpdate) => shoppingListUpdate(item, propsToUpdate)}/>
         </SwipeableItem>; 
     };
     return (

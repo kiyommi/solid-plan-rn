@@ -16,16 +16,23 @@ export const Home = ({navigation}: any) => {
         navigation.navigate('ShoppingList')
     }
 
+    const goToProducts = () => {
+        navigation.navigate('Products')
+    }
+
     return (
         <View
             style={{
                 flex: 1,
-                justifyContent: 'center',
                 alignItems: 'center',
             }}>
-            <View>
+            <View style={{height: 200}}>
                 <Text onPress={goToInventory}>Freezer Stash - Close expiry date</Text>
                 <InventoryList data={closeExpiryItems} />
+            </View>
+
+            <View>
+                <Text onPress={goToProducts}>Create new products</Text>
             </View>
 
             <View>

@@ -9,7 +9,7 @@ const requestWrapper = async (request: () => Promise<Response>) => {
 
 
     const data = await response.json();
-    console.log('got data');
+    console.log('got data: ', response);
 
     if (response.ok) {
       console.log('good response');

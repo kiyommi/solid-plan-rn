@@ -100,11 +100,11 @@ const SuggestionInput = ({
                                 Add new
                             </Button>
                         }
-                        <Pressable
-                            style={[styles.button, styles.buttonClose, {position: 'absolute', bottom: 0}]}
+                        <Button
+                            style={styles.buttonClose}
                             onPress={onSuggestionCanceled}>
-                            <Text style={styles.textStyle}>Cancel</Text>
-                        </Pressable>
+                            Cancel
+                        </Button>
                     </View>
                 </View>
             </Modal>
@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
     suggestionsContainer: {
         backgroundColor: Colors.primary100,
         width: '100%',
+        maxHeight: '80%',
     },
     modalView: {
       margin: 20,
@@ -153,13 +154,9 @@ const styles = StyleSheet.create({
       shadowRadius: 4,
       elevation: 5,
     },
-    button: {
-      borderRadius: 20,
-      padding: 10,
-      elevation: 2,
-    },
     buttonClose: {
-      backgroundColor: '#2196F3',
+        position: 'absolute',
+        bottom: 20,
     },
     textStyle: {
       color: 'black',

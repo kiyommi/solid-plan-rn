@@ -1,9 +1,15 @@
 export enum ProductType {
-    VEGETABLE,
-    FRUIT,
+    FRESH_PRODUCE,
     DAIRY,
+    MEAT,
+    FISH,
     GRAIN,
-    PROTEIN
+    BAKERY,
+    DELI,
+    FROZEN,
+    CLEANING,
+    HYGEAN,
+    OTHER,
   }
   
 export enum AmountType {

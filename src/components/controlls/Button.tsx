@@ -1,11 +1,11 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 
 import { Colors } from '../../constants/styles';
 
-function Button({ children, onPress, isFlat }: ButtonProps) {
+function Button({ children, onPress, isFlat, style }: ButtonProps) {
   return (
     <Pressable
-      style={({ pressed }) => [styles.button,!isFlat && styles.regButton, pressed && styles.pressed]}
+      style={({ pressed }) => [style, styles.button,!isFlat && styles.regButton, pressed && styles.pressed]}
       onPress={onPress}
     >
       <View>
@@ -21,6 +21,7 @@ type ButtonProps = {
     children: React.ReactNode,
     onPress: (() => void) | null | undefined,
     isFlat?: boolean,
+    style?: StyleProp<TextStyle>
 }
 
 const styles = StyleSheet.create({

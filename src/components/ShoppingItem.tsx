@@ -2,9 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Input from "./controlls/Input";
 import { AmountType } from "../types/enums";
 import SuggestionInput from "./controlls/SuggestionInput";
-
-import { PRODUCTS } from "../dummyData/products";
-
+import { useProducts } from "../context/Product.context";
 
 const shiftAmountType = (currentAmountType: AmountType) => {
     const newType = (currentAmountType + 1) % (Object.keys(AmountType).length/2);
@@ -22,11 +20,12 @@ const AMOUNT_TYPES = [
 const listColors = ['white', 'ivory'];
 
 const ShoppingItem = ({item, index, onItemUpdate}: {item: PopulatedShoppingItem, index: number, onItemUpdate: (p: ItemPropToUpdate) => void}) => {
+    const { products } = useProducts();
 
     const getFilteredGroceries = (searchParam: string) => {
-        //TODO: replace with server request
         const lowerSearch = searchParam.toLowerCase();
-        return PRODUCTS.filter((product)=> product.name.toLowerCase().includes(lowerSearch));
+        console.log('products: ', products);
+        return products.filter((product)=> product?.name?.toLowerCase().includes(lowerSearch));
     };
 
     return (

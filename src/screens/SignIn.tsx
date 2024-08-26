@@ -9,13 +9,11 @@ export const SignIn = () => {
   const { setUser, setSignInError } = useAuth();
 
   const onSubmit = async ({email, password}: SignInFields) => {
-    console.log('signing in');
     setSignInError(undefined);
     const response = await post(`${serverUrl}/auth/login`, {
         email,
         password,
     }) as SignInResponse;
-    console.log('logged in');
     setUser(response.user);
     setSignInError(response.error);
   };

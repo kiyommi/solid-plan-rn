@@ -10,6 +10,7 @@ import { View} from "react-native";
 import { AnimatedSVGPath } from "react-native-svg-animations";
 import { Inventory } from "./Inventory";
 import { ShoppingList } from "./ShoppingList";
+import { Products } from "./Products";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -69,8 +70,15 @@ export const Main = () => {
                         headerRight: (props) => <SettingButton />
                     }}
                     />
+                    <Stack.Screen name="Products" component={Products} />
                   </Stack.Group>
                 )}
+                {/* {
+                  user?.role === 'admin' && 
+                  <Stack.Group>
+                    
+                </Stack.Group>
+                } */}
               </Stack.Navigator>
         </NavigationContainer>
     )
