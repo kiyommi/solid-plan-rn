@@ -20,7 +20,6 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
         get(`${serverUrl}/products`).then(
             ({products}) => {
                 console.log('fetched products');
-                console.log('products: ', products)
                 setProducts(products);
             }
         );

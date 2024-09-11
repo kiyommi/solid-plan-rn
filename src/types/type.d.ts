@@ -16,4 +16,5 @@ interface Credentials extends BaseCredentials {
 interface User {
     id: string;
     name: string;
+    shoppingList? : ShoppingItem[]  
 }

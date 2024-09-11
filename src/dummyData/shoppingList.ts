@@ -1,2 +1,0 @@
-
-export const SHOPPING_ITEMS = [{id: '66c72ec22046403a165cc700', amount: '1', amountType: 1}, {id: '66c731989feea96a7aed1d34', amount: '1', amountType: 1}, {id: '66c732f99feea96a7aed1d36', amount: '1', amountType: 0}, {id: '66c733749feea96a7aed1d38', amount: '1', amountType: 1}, {id: '66c734339feea96a7aed1d3a', amount: '1', amountType: 0}];

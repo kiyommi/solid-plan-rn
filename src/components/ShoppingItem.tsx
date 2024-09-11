@@ -24,7 +24,6 @@ const ShoppingItem = ({item, index, onItemUpdate}: {item: PopulatedShoppingItem,
 
     const getFilteredGroceries = (searchParam: string) => {
         const lowerSearch = searchParam.toLowerCase();
-        console.log('products: ', products);
         return products.filter((product)=> product?.name?.toLowerCase().includes(lowerSearch));
     };
 

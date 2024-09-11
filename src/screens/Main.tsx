@@ -16,8 +16,6 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const Main = () => {
     const { fetchUser, user, isLoginPending } = useAuth() as ExtendedAuthContext;
-    console.log('main screen user: ', user);
-    console.log('is pending: ', isLoginPending);
 
     useEffect(() => {fetchUser()}, []);
     if (isLoginPending) {
@@ -74,7 +72,7 @@ export const Main = () => {
                   </Stack.Group>
                 )}
                 {/* {
-                  user?.role === 'admin' && 
+                  user?.role === 'Admin' && 
                   <Stack.Group>
                     
                 </Stack.Group>

@@ -5,7 +5,7 @@ import { INVENTORY_DATA } from "../dummyData/inventory";
 import { closeExpiryFilter } from "../helpers/inventoryHelper";
 
 
-export const Home = ({navigation}: any) => {
+export const Home = ({navigation, route}: any) => {
     const closeExpiryItems = INVENTORY_DATA.filter((item) => closeExpiryFilter(item.expiryDate));
 
     const goToInventory = () => {
