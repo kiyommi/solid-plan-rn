@@ -62,7 +62,7 @@ const saveLocalShoppingList = async(shoppingList: ShoppingItem[]) => {
       });
 };
 
-const formatShoppingList = (list) => {
+const formatShoppingList = (list: PopulatedShoppingItem[]) => {
     console.log('LIST:', "\n");
     list.forEach(item => {
         console.log(item.name,' - ',item.amount, "\n");
@@ -194,9 +194,6 @@ export const ShoppingList = () => {
             />
             <TouchableOpacity onPress={addItem} style={styles.addButton}>
                 <Icon id="AddItem" name="add" type='ionicon' color='white' size={40}/>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={saveRemoteShoppingList} style={styles.saveButton}>
-                <Icon id="SaveItem" name="save" type='ionicon' color='white' size={40}/>
             </TouchableOpacity>
       </View>
     );
