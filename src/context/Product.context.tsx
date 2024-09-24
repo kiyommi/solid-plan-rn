@@ -3,7 +3,7 @@ import React, { createContext, useState, useContext, useEffect} from 'react';
 import { serverUrl } from '../../consts';
 import { get } from "../helpers/httpHelper";
 import { ProductType } from '../types/enums';
-import { useAuth } from './Auth.context';
+import { useActive } from '../hooks/useActive';
 
 const initial = {
   products: [],
@@ -12,7 +12,7 @@ const initial = {
 export const ProductContext = createContext<ProductContextType>(initial);
 
 export const ProductProvider = ({ children }: ProductProviderProps) => {
-    const {user} = useAuth();
+    const isActive = useActive();
     const [products, setProducts] = useState<Product[]>([]);
 
     const fetchProducts = () => {
@@ -26,10 +26,10 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
     }
 
     useEffect(() => {
-        if (user) {
+        if (isActive) {
             fetchProducts();
         }
-    }, [user]);
+    }, [isActive]);
 
     return (
         <ProductContext.Provider
